@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\NewsRecord;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NewsController extends Controller
 {
@@ -15,6 +16,10 @@ class NewsController extends Controller
 
     public function store(Request $request)
     {
+        if (Auth::user()->role_id == 4) {
+            return response(null, 403);
+        }
+
         $record = NewsRecord::create([
             'title' => $request->title,
             'longtitle' => $request->longtitle,
@@ -32,6 +37,10 @@ class NewsController extends Controller
 
     public function destroy(NewsRecord $record)
     {
+        if (Auth::user()->role_id == 4) {
+            return response(null, 403);
+        }
+
         if ($record->delete()) {
             return response(null, 204);
         }
@@ -39,6 +48,10 @@ class NewsController extends Controller
 
     public function update(Request $request, NewsRecord $record)
     {
+        if (Auth::user()->role_id == 4) {
+            return response(null, 403);
+        }
+
         $post = $record->update([
             'title' => $request->title,
             'longtitle' => $request->longtitle,
