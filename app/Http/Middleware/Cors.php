@@ -16,7 +16,7 @@ class Cors
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request)->header('Access-Control-Allow-Origin', '*')
+        return $next($request)->header('Access-Control-Allow-Origin', 'https://co-med.web.app/*')
             ->header('Access-Control-Allow-Methods','GET, POST, PUT, PATCH, DELETE,
      OPTIONS')
             ->header('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-
