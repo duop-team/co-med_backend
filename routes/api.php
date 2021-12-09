@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
@@ -34,3 +35,7 @@ Route::middleware('auth:sanctum')->post('news', [NewsController::class, 'store']
 Route::middleware('auth:sanctum')->put('news/{record}', [NewsController::class, 'update']);
 Route::get('news/{record}', [NewsController::class, 'show']);
 Route::middleware('auth:sanctum')->delete('news/{record}', [NewsController::class, 'destroy']);
+
+Route::middleware('auth:sanctum')->post('staff', [StaffController::class, 'store']);
+Route::middleware('auth:sanctum')->get('staff', [StaffController::class, 'index']);
+Route::middleware('auth:sanctum')->delete('staff/{record}', [StaffController::class, 'destroy']);
