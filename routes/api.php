@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NewsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
@@ -24,7 +25,12 @@ Route::middleware('auth:sanctum')->get('/name', function (Request $request) {
 });
 
 Route::prefix('sanctum')->group(function() {
-    Route::post('register', 'App\Http\Controllers\API\AuthController@register');
-    Route::post('token', 'App\Http\Controllers\API\AuthController@token');
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('token', [AuthController::class, 'token']);
 });
 
+Route::get('news', [NewsController::class, 'index']);
+Route::middleware('auth:sanctum')->post('news', [NewsController::class, 'store']);
+Route::middleware('auth:sanctum')->put('news/{record}', [NewsController::class, 'update']);
+Route::get('news/{record}', [NewsController::class, 'show']);
+Route::middleware('auth:sanctum')->delete('news/{record}', [NewsController::class, 'destroy']);
