@@ -15,8 +15,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
-            'device_name' => ['required', 'string']
+            'password' => ['required', 'string', 'min:8']
         ]);
 
         if ($validator->fails()) {
@@ -25,6 +24,8 @@ class AuthController extends Controller
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
+        $input['role_id'] = 4;
+
         $user = User::create($input);
 
         $token = $user->createToken($request->email)->plainTextToken;
