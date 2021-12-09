@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class StaffController extends Controller
 {
@@ -24,6 +25,10 @@ class StaffController extends Controller
         }
 
         $input = $request->all();
+        if (isset($input['password'])) {
+            $input['password'] = Hash::make($input['password']);
+        }
+
         if (isset($input['doctor'])) {
             $input['role_id'] = 3;
             unset($input['doctor']);
