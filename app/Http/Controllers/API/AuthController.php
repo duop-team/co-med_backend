@@ -17,26 +17,26 @@ class AuthController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
             'device_name' => ['required', 'string']
-    ]);
+        ]);
 
-    if ($validator->fails()) {
-        return response()->json(['error' => $validator->errors()], 401);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+
+        $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
+        $user = User::create($input);
+
+        $token = $user->createToken($request->email)->plainTextToken;
+
+        return response()->json(['token' => $token], 200);
     }
 
-    $input = $request->all();
-    $input['password'] = bcrypt($input['password']);
-    $user = User::create($input);
-
-    $token = $user->createToken($request->device_name)->plainTextToken;
-
-    return response()->json(['token' => $token], 200);
-}
     public function token(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:8'],
-            'device_name' => ['required', 'string']
+            'password' => ['required', 'string', 'min:8']
         ]);
 
         if ($validator->fails()) {
@@ -45,10 +45,10 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || Hash::check($request->password, $user->password)) {
-            return response()->json(['error' => 'The provided credentials are incorrect . '], 401);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => 'The provided credentials are incorrect: '], 401);
         }
 
-        return response()->json(['token' => $user->createToken($request->device_name)->plainTextToken]);
+        return response()->json(['token' => $user->createToken($request->email)->plainTextToken]);
     }
 }
