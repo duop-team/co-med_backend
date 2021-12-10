@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\VisitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
@@ -39,3 +40,8 @@ Route::middleware('auth:sanctum')->delete('news/{record}', [NewsController::clas
 Route::middleware('auth:sanctum')->post('staff', [StaffController::class, 'store']);
 Route::middleware('auth:sanctum')->get('staff', [StaffController::class, 'index']);
 Route::middleware('auth:sanctum')->delete('staff/{record}', [StaffController::class, 'destroy']);
+
+Route::middleware('auth:sanctum')->get('users/{patient}/visits', [VisitController::class, 'index']);
+Route::middleware('auth:sanctum')->post('users/{patient}/visits', [VisitController::class, 'store']);
+Route::middleware('auth:sanctum')->get('visits/{visit}', [VisitController::class, 'show']);
+Route::middleware('auth:sanctum')->delete('visits/{visit}', [VisitController::class, 'destroy']);
