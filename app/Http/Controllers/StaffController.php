@@ -15,7 +15,7 @@ class StaffController extends Controller
             return response(null, 403);
         }
 
-        return User::where('role_id', 2)->where('role_id', 3)->orderBy('name');
+        return response()->json(User::whereIn('role_id', [2, 3])->get());
     }
 
     public function store(Request $request)
